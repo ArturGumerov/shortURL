@@ -9,8 +9,8 @@ import (
 	"github.com/arturgumerov/shortURL/helpers"
 	"github.com/asaskevich/govalidator"
 	"github.com/go-redis/redis/v8"
-	"github.com/gofiber/fiber"
-	"github.com/gofiber/fiber/v2/internal/uuid"
+	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 )
 
 type request struct {
@@ -24,7 +24,7 @@ type response struct {
 	CustomShort     string        `json:"short"`
 	Expiry          time.Duration `json:"expiry"`
 	XRateRemaining  int           `json:"rate_remining"`
-	XRateLimitReset int           `json:"rate_limit_rest"`
+	XRateLimitReset time.Duration `json:"rate_limit_rest"`
 }
 
 func ShortenURL(c *fiber.Ctx) error {
@@ -116,7 +116,7 @@ func ShortenURL(c *fiber.Ctx) error {
 
 	respon.CustomShort = os.Getenv("DOMAIN") + "/" + id
 
-	return c.Status(fiber.StatusOk).JSON(respon)
+	return c.Status(fiber.StatusOK).JSON(respon)
 
 	return nil
 }
